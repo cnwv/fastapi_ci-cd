@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "fastapi-ci-cd"
+version = "0.1.0"
+description = ""
+authors = ["cnwv <115669384+cnwv@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12.7"
+fastapi = "^0.115.5"
+uvicorn = "^0.32.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+ruff = "^0.7.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
