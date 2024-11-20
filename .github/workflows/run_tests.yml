@@ -1,10 +1,11 @@
-name: Docker Build, Test, and Push
+name: Docker Build, Test
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 
 jobs:
   test:
