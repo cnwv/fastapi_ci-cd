@@ -2,7 +2,7 @@ name: Docker Build and Push
 
 on:
   workflow_run:
-    workflows: ["Docker Build, Test, and Push] # Указываем, после какого workflow запускаем
+    workflows: ["Docker Build, Test"] # Указываем, после какого workflow запускаем
     types:
       - completed
 
