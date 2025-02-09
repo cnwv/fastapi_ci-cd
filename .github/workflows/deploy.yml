@@ -1,8 +1,8 @@
-name: Deploy buy runner
+name: Deploy via runner
 
 on:
   workflow_run:
-    workflows: ["Docker Build and Push"] # Указываем, после какого workflow запускаем
+    workflows: ["Docker Build and Push"]
     types:
       - completed
 
@@ -14,11 +14,22 @@ jobs:
         run: docker compose down
       - name: Remove unused data
         run: docker system prune -a -f
+
   deploy:
     needs: prepare-environment
     runs-on: self-hosted
     steps:
-      - name: checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v3
-      - name: docker-compose
+
+      - name: Retrieve secrets from HCP Vault
+        run: |
+          export SECRETS=$(curl --silent --location "https://api.cloud.hashicorp.com/secrets/2023-11-28/organizations/3d73c48b-e8a0-4582-b09c-a86ee15c75b3/projects/46ecd87e-84c6-4cec-90fd-7b7cb6bf19d5/apps/auto-spec-bot/secrets:open" \
+          --request GET \
+          --header "Authorization: Bearer ${{ secrets.HCP_API_TOKEN }}" | \
+          jq -r '.secrets | map("\(.name)=\"\(.static_version.value)\"") | .[]')
+
+          echo "$SECRETS" >> $GITHUB_ENV
+
+      - name: Deploy using Docker Compose
         run: docker compose up -d
