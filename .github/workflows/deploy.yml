@@ -30,6 +30,8 @@ jobs:
           jq -r '.secrets | map("\(.name)=\"\(.static_version.value)\"") | .[]')
 
           echo "$SECRETS" >> $GITHUB_ENV
+          echo "Loaded secrets:"
+          echo "$SECRETS"
 
       - name: Deploy using Docker Compose
         run: docker compose up -d
